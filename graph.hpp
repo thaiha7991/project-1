@@ -4,6 +4,8 @@
 #include <string>
 #include <map>
 
+using namespace std;
+
 class Node {
 private:
   // data for the node will be contained 
@@ -11,11 +13,11 @@ private:
   // nodes will have a list (vector)
   //  of pointers to the other nodes it
   //  points to called "ptrs"
-  std::string data;
-  std::vector<Node *> ptrs;
+  string data;
+  vector<Node *> ptrs;
 public:
   Node() {} // default constructor
-  Node(std::string data) { // constructor
+  Node(string data) { // constructor
     this->data = data;     // that initializes with data
   }
   // nodes must be able to add a new pointer to their list
@@ -24,8 +26,8 @@ public:
     this->ptrs.push_back(ptr);
   }
   // getter functions (node data should be immutable)
-  std::string getData() { return this->data; }
-  std::vector<Node *> getPtrs() { return this->ptrs; }
+  string getData() { return this->data; }
+  vector<Node *> getPtrs() { return this->ptrs; }
 };
 
 class Graph {
@@ -34,61 +36,42 @@ private:
   // node to the node itself (this is a little redundant
   // but allows for faster lookup, and cleaner
   // implementations ???)
-  std::map<std::string, Node> nodes; // key: node.data, value: node
+  map<string, Node> nodes; // key: node.data, value: node
 public:
+  size_t getSize() { return this->nodes.size(); }
   // Add Node (addNode):
   //  adds a new node to the graph, the new node will
   //  not have any connections, and be mapped to the
   //  argument "data" in the nodes map
-  void addNode(std::string data) {
+  bool addNode(string data) {
+    if(this->nodes.count(data) > 0)
+      return false; // error key already exists
     this->nodes[data] = Node(data); // create a new node, add it to the graph
+    return true;
   }
   // Add Edge (addEdge):
   //  adds a directed edge between two nodes within the graph
-  void addEdge(std::string from, std::string to) {
+  bool addEdge(string from, string to) {
+    if(this->nodes.count(from) == 0)
+      addNode(from); // add the uninitialized node
+    if(this->nodes.count(to) == 0)
+      addNode(to); // add the uninitialized node
     this->nodes[from].addPtr(&this->nodes[to]); // add the pointer to the node
+    return true;
+  }
+  // utility to visualize the nodes in the graph
+  void showNodes() {
+    for(pair<string, Node> kv : this->nodes)
+      cout << kv.first << ": " << kv.second.getPtrs().size() << endl;
   }
   // utility to visualize the edges in the graph
   void showEdges() {
-    std::map<std::string, Node>::iterator i;
-    for(i = this->nodes.begin(); i != this->nodes.end(); i++) {
-      Node node = i->second;
-      std::cout << node.getData() << ":";
-      std::vector<Node *> edges = node.getPtrs();
-      for(size_t j = 0; j < edges.size(); j++) {
-        std::cout << " " << edges[j]->getData();
+    for(pair<string, Node> kv : this->nodes) {
+      if(!kv.second.getPtrs().empty()) {
+        cout << kv.first << ": ";
+        for(Node *node : kv.second.getPtrs())
+          cout << "\t" << node->getData() << endl;
       }
-      std::cout << std::endl;
     }
   }
 };
-
-std::vector<std::string> parse(std::string path) {
-  std::ifstream file(path);
-  std::vector<std::string> nodes;
-  return nodes;
-}
-
-int main(int argc, char **argv) {
-
-  if(argc != 2) {
-    std::cout << "usage: " << argv[0] << " <input>" << std::endl;
-    return 0;
-  }
-
-  std::vector<std::string> input = parse(argv[1]);
-
-  Graph g = Graph();
-
-  g.addNode("A");
-  g.addNode("B");
-  g.addNode("C");
-
-  g.addEdge("A", "B");
-  g.addEdge("A", "C");
-  g.addEdge("C", "B");
-
-  g.showEdges();
-
-  return 0;
-}
