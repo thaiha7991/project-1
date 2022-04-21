@@ -1,0 +1,17 @@
+From:  Moscow, Russia
+To  :  Hong Kong, SAR
+From:  Tokyo, Japan
+To  :  Hong Kong, SAR
+       Seoul, South Korea
+       London, United Kingdom
+       Moscow, Russia
+From:  Hong Kong, SAR
+To  :  Seoul, South Korea
+       Moscow, Russia
+       London, United Kingdom
+       Tokyo, Japan
+From:  London, United Kingdom
+To  :  Seoul, South Korea
+       Moscow, Russia
+       Hong Kong, SAR
+       Tokyo, Japan
