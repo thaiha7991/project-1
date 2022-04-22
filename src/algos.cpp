@@ -22,7 +22,7 @@ GraphPath shortestBFS(Graph g, string src, string dst) {
     
     for(string name : g.getNodes(node.first)) {
       if(visit.count(name) == 0) {
-        paths.insert_or_assign(name, node.first);
+        paths[name] = node.first;
         nodes.push({name, node.second + 1});
         visit.insert(name);
       }
