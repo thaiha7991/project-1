@@ -1,11 +1,10 @@
-#include "alg.hpp"
+#include <algorithm>
+
 #include "graph.hpp"
 
-using namespace std;
+Graph::Graph() {}
+Graph::Graph(ifstream &file) {
 
-map<string, vector<string>> parseInput(ifstream &file) {
- 
-  map<string, vector<string>> cities;
   string from, line;
 
   while(getline(file, line)) {
@@ -23,84 +22,24 @@ map<string, vector<string>> parseInput(ifstream &file) {
       line = line.substr(7, line.length() - 1);
 
     if(!from.empty() && !line.empty())
-      cities[from].push_back(line);
+      this->nodes[from].insert(line);
   }
 
   // we dont need this anymore
   file.close();
-
-  return cities;
 }
 
-Node::Node() {}
-Node::Node(string data) {
-  this->data = data;
-}
-
-void Node::addPtr(Node *ptr) {
-  this->ptrs.push_back(ptr);
-}
-string Node::getData() { 
-  return this->data; 
-}
-vector<Node *> Node::getPtrs() { 
-  return this->ptrs; 
-}
-
-Graph::Graph() {}
-Graph::Graph(ifstream &file) {
-  for(pair<string, vector<string>> kv : parseInput(file)) {
-    for(string edge : kv.second)
-      this->addEdge(kv.first, edge);
-  }
-}
-
-size_t Graph::getSize() { 
+size_t Graph::size() { 
   return this->nodes.size(); 
 }
-  
-vector<string> Graph::getNodeNames() {
-  vector<string> nodes;
-  for(pair<string, Node> kv : this->nodes)
-    nodes.push_back(kv.first);
+
+set<string> Graph::getNodes() {
+  set<string> nodes;
+  for(pair<string, set<string>> kv : this->nodes)
+    nodes.insert(kv.first);
   return nodes;
 }
 
-vector<string> Graph::getPtrsNames(string name) {
-  vector<string> nodes;
-  for(Node * node : this->nodes[name].getPtrs())
-    nodes.push_back(node->getData());
-  return nodes;
+set<string> Graph::getNodes(string node) {
+  return this->nodes[node];
 }
-
-bool Graph::addNode(string data) {
-  if(this->nodes.count(data) > 0)
-    return false;
-  this->nodes[data] = Node(data);
-  return true;
-}
-
-bool Graph::addEdge(string from, string to) {
-  if(this->nodes.count(from) == 0)
-    addNode(from);
-  if(this->nodes.count(to) == 0)
-    addNode(to);
-  this->nodes[from].addPtr(&this->nodes[to]);
-  return true;
-}
-
-void Graph::showNodes() {
-  for(pair<string, Node> kv : this->nodes)
-    cout << kv.first << ": " << kv.second.getPtrs().size() << endl;
-}
-
-void Graph::showEdges() {
-  for(pair<string, Node> kv : this->nodes) {
-    if(!kv.second.getPtrs().empty()) {
-      cout << kv.first << ":" << endl;
-      for(Node *node : kv.second.getPtrs())
-        cout << "\t" << node->getData() << endl;
-    }
-  }
-}
-

@@ -1,49 +1,28 @@
 #ifndef __graph_hpp__
 #define __graph_hpp__
 
-#include <algorithm>
-#include <iostream>
+// this file defines the prototype
+// for the graph data structure
+
 #include <fstream>
-#include <vector>
 #include <string>
+#include <set>
 #include <map>
 
 using namespace std;
 
-map<string, vector<string>> parseInput(ifstream &);
-
-class Node {
-private:
-  string data;
-  vector<Node *> ptrs;
-public:
-  Node();
-  Node(string);
-  // adds a new pointer to adj list
-  void addPtr(Node *);
-  // access node data
-  string getData();
-  vector<Node *> getPtrs();
-};
-
 class Graph {
 private:
   // hash map of all nodes
-  map<string, Node> nodes;
+  map<string, set<string>> nodes;
 public:
   Graph();
   Graph(ifstream &);
   // access info about graph
-  size_t getSize();
-  vector<string> getNodeNames();
-  vector<string> getPtrsNames(string);
-  // adds either an edge or node
-  // adding an edge will add nodes implicitly as needed
-  bool addNode(string);
-  bool addEdge(string, string);
-  // utility function to show information
-  void showNodes();
-  void showEdges();
+  size_t size();
+  // access nodes and node neighbors
+  set<string> getNodes();
+  set<string> getNodes(string);
 };
 
 #endif

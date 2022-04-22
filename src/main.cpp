@@ -1,12 +1,11 @@
+#include <algorithm>
+#include <iostream>
+
 #include "graph.hpp"
-#include "alg.hpp"
-
-#include <set>
-
-using namespace std;
+#include "algos.hpp"
 
 bool input_valid_task(string &);
-bool input_valid_city(string, string &, vector<string>);
+bool input_valid_city(string, string &, set<string>);
 
 vector<string> task1(Graph);
 
@@ -60,7 +59,7 @@ bool input_valid_task(string &input) {
   return (bool) choices.count(input);
 }
 
-bool input_valid_city(string message, string &input, vector<string> valid) {
+bool input_valid_city(string message, string &input, set<string> valid) {
   cout << message << " (case insensitive): ";
   getline(cin, input);
   transform(input.begin(), input.end(), input.begin(), ::tolower);
@@ -72,17 +71,17 @@ bool input_valid_city(string message, string &input, vector<string> valid) {
 vector<string> task1(Graph g) {
   
   GraphPath shortestPath;
-  vector<string> valid;
+  set<string> valid;
   string a, b, input;
   unsigned int x;
   
-  valid = g.getNodeNames();
+  valid = g.getNodes();
   
   while(!input_valid_city("[Task 1] Enter city A", a, valid))
     cout << "not a valid city" << endl;
   
   // removes selection from valid choices
-  valid.erase(remove(valid.begin(), valid.end(), a), valid.end());
+  valid.erase(a);
   while(!input_valid_city("[Task 1] Enter city B", b, valid)) {
     if(a == b)
       cout << "You are already here" << endl;

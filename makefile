@@ -2,14 +2,14 @@ cc=g++
 cf=-Wall -g -I include
 
 asm=$(shell uname -m)
-obj=alg.o graph.o main.o
+obj=algos.o graph.o main.o
 
 all: flights rmobj
 
 flights: $(obj)
 	$(cc) $(cf) -o $@.$(asm) $^
 
-alg.o: src/alg.cpp
+algos.o: src/algos.cpp
 	$(cc) $(cf) -c $^
 
 graph.o: src/graph.cpp
