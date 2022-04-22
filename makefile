@@ -3,11 +3,12 @@ cf=-Wall -g -I include
 
 asm=$(shell uname -m)
 obj=algos.o graph.o main.o
+bin=flights.$(asm)
 
 all: flights rmobj
 
 flights: $(obj)
-	$(cc) $(cf) -o $@.$(asm) $^
+	$(cc) $(cf) -o $(bin) $^
 
 algos.o: src/algos.cpp
 	$(cc) $(cf) -c $^
@@ -22,4 +23,4 @@ rmobj:
 	rm *.o
 
 clean:
-	rm flights
+	rm $(bin)

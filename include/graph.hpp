@@ -23,6 +23,7 @@ public:
   // access nodes and node neighbors
   set<string> getNodes();
   set<string> getNodes(string);
+  set<string> getNodesWithEdges();
 };
 
 #endif

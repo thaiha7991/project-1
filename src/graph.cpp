@@ -47,3 +47,11 @@ set<string> Graph::getNodes() {
   return nodes;
 }
 
+set<string> Graph::getNodesWithEdges() {
+  set<string> nodes;
+  for(pair<string, set<string>> kv : this->nodes) {
+    if(kv.second.size() > 0)
+      nodes.insert(kv.first);
+  }
+  return nodes;
+}

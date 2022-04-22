@@ -76,13 +76,15 @@ vector<string> task1(Graph g) {
   string a, b, input;
   unsigned int x;
   
-  valid = g.getNodes();
+  valid = g.getNodesWithEdges(); // only inner nodes can be the starting point
   
   while(!input_valid_city("[Task 1] Enter city A", a, valid))
     cout << "not a valid city" << endl;
   
+  valid = g.getNodes(); // valid choices are now all nodes
   // removes selection from valid choices
   valid.erase(a);
+
   while(!input_valid_city("[Task 1] Enter city B", b, valid)) {
     if(a == b)
       cout << "You are already here" << endl;
