@@ -3,7 +3,7 @@
 
 #include "algos.hpp"
 
-GraphPath shortestBFS(Graph g, string src, string dst) {
+GraphPath BFS(Graph g, string src, string dst) {
 
   queue<NodeWeight> nodes;
   map<string, string> paths;

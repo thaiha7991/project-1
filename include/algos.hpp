@@ -9,6 +9,6 @@
 typedef pair<string, unsigned int> NodeWeight;
 typedef pair<map<string, string>, unsigned int> GraphPath;
 
-GraphPath shortestBFS(Graph, string, string);
+GraphPath BFS(Graph, string, string);
 
 #endif
