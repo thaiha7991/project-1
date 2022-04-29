@@ -16,7 +16,9 @@ int main(int argc, char **argv) {
     cout << "usage: " << argv[0] << " <input>" << endl;
     return 0;
   }
-  
+
+  cout << "test" << endl;
+
   ifstream file(argv[1]);
   if(!file.good()) {
     cout << argv[1] << " is not a file" << endl;
