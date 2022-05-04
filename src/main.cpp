@@ -6,8 +6,7 @@
 #include "algos.hpp"
 #include "tasks.hpp"
 
-bool input_valid_task(string &);
-bool input_valid_city(string, string &, set<string>);
+void showFlights(vector<string>);
 
 int main(int argc, char **argv) {
 
@@ -17,8 +16,6 @@ int main(int argc, char **argv) {
     return 0;
   }
 
-  cout << "test" << endl;
-
   ifstream file(argv[1]);
   if(!file.good()) {
     cout << argv[1] << " is not a file" << endl;
@@ -26,74 +23,86 @@ int main(int argc, char **argv) {
   }
   // initialize the graph class
   Graph cities(file);
-  string input;
+
+  vector<string> route;
+  set<string> accepted;
+
+  string input, a, b, c;
+  unsigned int x;
   
-  cout << "1. x connections from a to b" << endl;
-  cout << "2. from a to d through b and c" << endl;
-  cout << "3. around the world and back" << endl;
-  cout << "4. middle ground" << endl;
-  while(!input_valid_task(input))
-    cout << "not a valid option" << endl;
-  
-  // 1 ) city a to city b with less than x connections
-  if(input == "1") {
-    
-    vector<string> nodes;
-    set<string> valid;
-    string a, b, input;
-    unsigned int x;
-  
-    valid = cities.getNodesWithEdges();
-    
-    while(!input_valid_city("[Task 1] Enter city A", a, valid))
-      cout << "not a valid city" << endl;
-    
-    valid = cities.getNodes(); // valid choices are now all nodes
-    valid.erase(a);
-    
-    while(!input_valid_city("[Task 1] Enter city B", b, valid)) {
-      if(a == b)
-        cout << "You are already here" << endl;
-      else
+  while(true) {
+   
+    accepted = cities.getNodesWithEdges();
+
+    cout << "1) x connections from a to b" << endl;
+    cout << "2) from a to d through b and c" << endl;
+    cout << "3) around the world and back" << endl;
+    cout << "4) middle ground" << endl;
+    cout << "l) list all nodes" << endl;
+    cout << "i) list all inner nodes (nodes with outbound connections)" << endl;
+    cout << "q) quit" << endl;
+    while(!validInput("select from menu", input, {"1","2","3","4","l","i","q"}))
+      cout << "not a valid option" << endl;
+
+    if(input == "q")
+      break;
+
+    if(input == "l") {
+      for(string city : cities.getNodes())
+        cout << city << endl;
+    } else if(input == "li") {
+      for(string city : cities.getNodesWithEdges())
+        cout << city << endl; 
+    }
+
+    // 1 ) city a to city b with less than x connections
+    if(input == "1") {
+          
+      while(!validInput("[Task 1] Enter city A (inner node)", a, accepted))
         cout << "not a valid city" << endl;
-    }
+      
+      accepted = cities.getNodes(); // valid choices are now all nodes
+      accepted.erase(a);
+      
+      while(!validInput("[Task 1] Enter city B (not city A)", b, accepted)) {
+        if(a == b)
+          cout << "You are already here" << endl;
+        else
+          cout << "not a valid city" << endl;
+      }
 
-    cout << "[Task 1] Enter desired minimum number of connections: ";
-    getline(cin, input); 
-    x = stoul(input, nullptr, 0);
+      while(!valueInput("[Task 1] Enter desired # of connections", x))
+        cout << "not a valid number" << endl;
 
-    cout << "[Task 1] starting..." << endl;
-    nodes = task1(cities, a, b, x);
+      route = task1(cities, a, b, x);
+
+    } else if(input == "2") {
+      // thai
+    } else if(input == "3") {
+      
+      while(!validInput("[Task 3] Enter starting city", a, accepted))
+        cout << "not a valid starting node" << endl;
+
+      route = task3(cities, a);
     
-    if(nodes.empty()) {
-      cout << "[Task 1] No path exists" << endl;
-      return 0;
-    }
-    
-    cout << "[Task 1] Actual jumps: " << nodes.size() - 1 << endl;
-    cout << "[Task 1] " << nodes[0]; // display path
-    for(size_t i = 1; i < nodes.size(); i++)
-      cout << " <-(" << nodes.size() - i << ")- " << nodes[i];
-    cout << endl;
-  } else if(input == "2") {
+    } else if(input == "4")
+      cout << "not ready yet :S" << endl;
 
+    showFlights(route);
   }
-  
+
+
   return 0;
 }
 
-bool input_valid_task(string &input) {
-  set<string> choices = { "1", "2", "3", "4" };
-  cout << "Select (1-4): ";
-  getline(cin, input);
-  return (bool) choices.count(input);
-}
-
-bool input_valid_city(string message, string &input, set<string> valid) {
-  cout << message << " (case insensitive): ";
-  getline(cin, input);
-  transform(input.begin(), input.end(), input.begin(), ::tolower);
-  if(find(valid.begin(), valid.end(), input) == valid.end())
-    return false;
-  return true; 
+void showFlights(vector<string> route) {
+  if(route.empty()) {
+    cout << "No path exists" << endl;
+  } else {
+    cout << "flights taken: " << route.size() - 1 << endl;
+    cout << route[0]; // display path
+    for(size_t i = 1; i < route.size(); i++)
+      cout << " <-(" << route.size() - i << ")- " << route[i];
+    cout << endl;
+  }
 }

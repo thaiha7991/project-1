@@ -2,6 +2,24 @@
 #include "algos.hpp"
 #include <iostream>
 
+bool validInput(string message, string &input, set<string> valid) {
+  cout << message << ": ";
+  getline(cin, input);
+  return (bool) valid.count(input);
+}
+
+bool valueInput(string message, unsigned int &x) {
+  cout << message << ": ";
+  try {
+    string input;
+    getline(cin, input);
+    x = stoul(input, nullptr, 0);
+  } catch (...) {
+    return false;
+  }
+  return true;
+}
+
 vector<string> task1(Graph g, string a, string b, unsigned int x) {
   
   GraphPath shortestPath;
@@ -22,4 +40,8 @@ vector<string> task1(Graph g, string a, string b, unsigned int x) {
   }
 
   return path;
+}
+
+vector<string> task3(Graph g, string a) {
+  return {};
 }

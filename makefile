@@ -23,10 +23,9 @@ main.o: src/main.cpp
 	$(cc) $(cf) -c $^
 
 mvobj:
-	mkdir obj
+	mkdir -p obj
 	mv *.o obj
 
 clean:
-	rm obj/*
-	rmdir obj
-	rm $(bin)
+	rm -rf obj
+	rm -f $(bin)

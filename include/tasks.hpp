@@ -7,6 +7,9 @@
 
 #include "graph.hpp"
 
+bool validInput(string, string &, set<string>);
+bool valueInput(string, unsigned int &);
+
 vector<string> task1(Graph, string, string, unsigned int);
 vector<string> task2(Graph, string, string, string, string);
 vector<string> task3(Graph, string);
