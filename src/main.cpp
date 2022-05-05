@@ -78,6 +78,24 @@ int main(int argc, char **argv) {
 
     } else if(input == "2") {
       // thai
+      while(!validInput("[Task 2] Enter city A", a, accepted))
+          cout << "not a valid city" << endl;
+        
+        accepted = cities.getNodes(); // valid choices are now all nodes
+        accepted.erase(a);
+        
+        while(!validInput("[Task 2] Enter city D (not city A)", d, accepted)) {
+          if(a == d)
+            cout << "You are already here" << endl;
+          else
+            cout << "not a valid city" << endl;
+        }
+        while(!valueInput("[Task 2] Enter city B", b, accepted))
+          cout << "not a valid city" << endl;
+        while(!valueInput("[Task 2] Enter city C", c, accepted))
+            cout << "not a valid city" << endl;
+            
+        route = task2(cities, a, b, c, d);
     } else if(input == "3") {
       
       while(!validInput("[Task 3] Enter starting city", a, accepted))
