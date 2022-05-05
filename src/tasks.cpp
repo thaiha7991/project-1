@@ -45,3 +45,23 @@ vector<string> task1(Graph g, string a, string b, unsigned int x) {
 vector<string> task3(Graph g, string a) {
   return {};
 }
+
+//find path from A to D thru B and C
+// most likely return the shortest path from a to d then attempt to find node b and c in the discovered path
+vector<string> task2(Graph g, string a, string b, string c, string d)
+{
+    GraphPath shortestPathAD;
+
+    map<string, string>pathB;
+    map<string, string>pathC;
+    vector<string>path;
+    string node;
+    
+    shortestPathAD = BFS(g, a, d); //search shortest path from a to b
+    
+    if (shortestPathAD.find (b) && shortestPathAD.find(c))
+        return path;
+    else
+        cout << "There is no path om city “A” to city “D” through city “B” and “C”."<<endl;
+    return 0;
+}
